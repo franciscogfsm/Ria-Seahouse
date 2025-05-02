@@ -119,14 +119,14 @@ const Footer: React.FC = () => {
                 href="tel:+351123456789"
                 className="hover:text-white transition-colors"
               >
-                +351 123 456 789
+                +351 962 773 707
               </a>
               <br />
               <a
-                href="mailto:booking@riaseahouse.com"
+                href="mailto:riaseahouse@gmail.com"
                 className="hover:text-white transition-colors"
               >
-                booking@riaseahouse.com
+                riaseahouse@gmail.com
               </a>
             </address>
           </div>

@@ -43,18 +43,29 @@ const Contact: React.FC = () => {
     setStatus({ type: null, message: "" });
 
     try {
-      const response = await fetch("/api/send", {
-        method: "POST",
+      const response = await fetch('https://qaucsydrplnclnsauwwn.supabase.co/functions/v1/send-email2', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          to: ["riaseahouse@gmail.com"],
+          subject: `New Booking Inquiry from ${formData.name}`,
+          html: `
+            <h2>New Booking Inquiry</h2>
+            <p><strong>Name:</strong> ${formData.name}</p>
+            <p><strong>Email:</strong> ${formData.email}</p>
+            <p><strong>Phone:</strong> ${formData.phone}</p>
+            <p><strong>Dates:</strong> ${formData.dates}</p>
+            <p><strong>Number of Guests:</strong> ${formData.guests}</p>
+            <p><strong>Message:</strong> ${formData.message}</p>
+          `,
+        }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || "Error sending message");
+        throw new Error('Failed to send email');
       }
 
       setStatus({
@@ -73,8 +84,7 @@ const Contact: React.FC = () => {
     } catch (error) {
       setStatus({
         type: "error",
-        message:
-          "Failed to send message. Please try again or contact us directly.",
+        message: "Failed to send message. Please try again or contact us directly.",
       });
     } finally {
       setIsSubmitting(false);
