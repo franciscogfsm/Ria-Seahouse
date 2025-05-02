@@ -112,39 +112,39 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section bg-gradient-to-b from-white to-gray-50 px-4 sm:px-6">
-      <div className="container-custom max-w-lg mx-auto">
+    <section id="contact" className="section bg-gradient-to-b from-white to-gray-50 px-4 sm:px-6 py-16 md:py-24">
+      <div className="container-custom max-w-6xl mx-auto">
         <motion.div
           ref={ref}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={containerVariants}
-          className="text-center mb-8 md:mb-12"
+          className="text-center mb-12 md:mb-16"
         >
           <motion.div
             variants={itemVariants}
-            className="inline-block mb-3 px-4 py-1.5 bg-primary-50 text-primary-600 rounded-full text-sm font-medium"
+            className="inline-block mb-4 px-5 py-2 bg-primary-50 text-primary-600 rounded-full text-sm font-medium"
           >
             Contact Us
           </motion.div>
-          <motion.h2 variants={itemVariants} className="section-title mb-3 text-2xl md:text-3xl">
+          <motion.h2 variants={itemVariants} className="section-title mb-4 text-2xl md:text-4xl">
             Book Your Perfect Stay
           </motion.h2>
           <motion.p
             variants={itemVariants}
-            className="text-base md:text-lg text-gray-700 max-w-sm mx-auto"
+            className="text-base md:text-lg text-gray-700 max-w-xl mx-auto"
           >
             Ready to experience the beauty of Ria Sea House? We're here to help!
           </motion.p>
         </motion.div>
 
-        <div className="space-y-6 md:grid md:grid-cols-2 md:gap-8 md:space-y-0">
+        <div className="space-y-6 md:grid md:grid-cols-2 md:gap-12 md:space-y-0">
           {/* Quick Contact Options */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-5 md:p-8"
+            className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-10"
           >
             <motion.h3
               variants={itemVariants}
@@ -153,7 +153,8 @@ const Contact: React.FC = () => {
               Quick Contact
             </motion.h3>
 
-            <motion.div variants={itemVariants} className="space-y-4">
+            {/* Mobile Version - visible only on mobile */}
+            <motion.div variants={itemVariants} className="space-y-4 md:hidden">
               <motion.a
                 href="tel:+351962773707"
                 className="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-gray-100 active:scale-98 transform transition-all duration-200"
@@ -200,20 +201,70 @@ const Contact: React.FC = () => {
                 </div>
                 <div className="ml-4 flex-1">
                   <h4 className="font-medium text-gray-900 mb-0.5">Follow Us</h4>
-                  <p className="text-primary-600 flex items-center justify-between text-base">
+                  <p className="text-primary-600 flex items-center justify-between text-sm">
                     <span className="font-medium">@riaseahouse</span>
-                    <ArrowRight className="w-4 h-4 opacity-70" />
+                    <ArrowRight className="w-4 h-4 opacity-70 flex-shrink-0 ml-2" />
                   </p>
                 </div>
               </motion.a>
             </motion.div>
 
-            <motion.div
-              variants={itemVariants}
-              className="mt-6 p-4 bg-primary-50 rounded-xl"
-            >
-              <p className="font-medium text-primary-700 mb-1">Available 24/7</p>
-              <p className="text-primary-600/90 text-sm">We'll get back to you within 24 hours</p>
+            {/* Desktop Version - visible only on desktop */}
+            <motion.div variants={itemVariants} className="hidden md:block">
+              <h3 className="text-2xl text-gray-900 font-normal mb-12">
+                Quick Contact
+              </h3>
+
+              <div className="space-y-12">
+                <div>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">Phone</h4>
+                  <motion.a
+                    href="tel:+351962773707"
+                    className="group block"
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.995 }}
+                  >
+                    <p className="text-xl text-primary-600 font-normal">
+                      +351 962 773 707
+                    </p>
+                  </motion.a>
+                </div>
+
+                <div>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">Email</h4>
+                  <motion.a
+                    href="mailto:riaseahouse@gmail.com"
+                    className="group block"
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.995 }}
+                  >
+                    <p className="text-xl text-primary-600 font-normal">
+                      riaseahouse@gmail.com
+                    </p>
+                  </motion.a>
+                </div>
+
+                <div>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">Social</h4>
+                  <motion.a
+                    href="https://www.instagram.com/riaseahouse"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block"
+                    whileHover={{ x: 2 }}
+                    whileTap={{ scale: 0.995 }}
+                  >
+                    <p className="text-xl text-primary-600 font-normal">
+                      @riaseahouse
+                    </p>
+                  </motion.a>
+                </div>
+
+                <div className="bg-blue-50/80 rounded-xl p-6">
+                  <p className="text-blue-600 text-lg font-medium mb-2">Available 24/7</p>
+                  <p className="text-blue-500/90 text-base">We'll get back to you within 24 hours</p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
 
@@ -222,7 +273,7 @@ const Contact: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
-            className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-5 md:p-8"
+            className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-6 md:p-10"
           >
             {status.type && (
               <motion.div
@@ -291,7 +342,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
                   <label
                     htmlFor="dates"
@@ -372,7 +423,7 @@ const Contact: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-4 px-6 bg-primary-600 text-white rounded-xl font-medium shadow-lg shadow-primary-600/20 hover:bg-primary-700 active:transform active:scale-98 transition-all duration-200 text-base ${
+                className={`w-full py-4 px-8 bg-primary-600 text-white rounded-xl font-medium shadow-lg shadow-primary-600/20 hover:bg-primary-700 active:transform active:scale-98 transition-all duration-200 text-base mt-6 ${
                   isSubmitting ? "opacity-75 cursor-not-allowed" : ""
                 }`}
               >

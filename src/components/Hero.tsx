@@ -72,28 +72,46 @@ const Hero: React.FC = () => {
       >
         <motion.div
           key={currentImageIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          initial={{
+            opacity: 0,
+            scale: 1.05,
+            x: 60,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            x: 0,
+          }}
+          exit={{
+            opacity: 0,
+            scale: 1,
+            x: -60,
+          }}
           transition={{
-            duration: 0.8,
-            ease: "easeInOut",
+            duration: 1.2,
+            ease: [0.4, 0, 0.2, 1],
           }}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${images[currentImageIndex]}')`,
             backgroundPosition: "center",
             backgroundSize: "cover",
-            willChange: "opacity",
+            willChange: "transform, opacity",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40"
+          />
         </motion.div>
       </AnimatePresence>
 
       {/* Previous image for smooth transition */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10 transition-all duration-1000 ease-in-out"
         style={{
           backgroundImage: `url('${
             images[(currentImageIndex - 1 + images.length) % images.length]
@@ -102,18 +120,21 @@ const Hero: React.FC = () => {
           backgroundSize: "cover",
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40" />
       </div>
 
       {/* Image indicators */}
-      <div className="absolute bottom-24 sm:bottom-20 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute bottom-24 sm:bottom-20 left-1/2 transform -translate-x-1/2 z-10 flex gap-3">
         {images.map((_, index) => (
           <motion.button
             key={index}
             onClick={() => setCurrentImageIndex(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              currentImageIndex === index ? "w-6 bg-white" : "w-2 bg-white/50"
+            className={`h-1.5 rounded-full transition-all duration-500 ${
+              currentImageIndex === index
+                ? "w-8 bg-white"
+                : "w-1.5 bg-white/40 hover:bg-white/60"
             }`}
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           />
         ))}
