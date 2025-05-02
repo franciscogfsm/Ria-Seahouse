@@ -22,7 +22,7 @@ const Gallery: React.FC = () => {
     "/images/10.jpeg",
     "/images/11.jpeg",
     "/images/12.jpeg",
-    "/images/13.jpeg",
+    "/images/16.jpeg",
     "/images/14.jpeg",
     "/images/15.jpeg",
   ];
@@ -40,7 +40,7 @@ const Gallery: React.FC = () => {
   // Handle autoplay
   useEffect(() => {
     if (!isPaused) {
-      autoplayRef.current = window.setInterval(nextSlide, 8000);
+      autoplayRef.current = window.setInterval(nextSlide, 12000);
     }
     return () => {
       if (autoplayRef.current) {
@@ -67,12 +67,13 @@ const Gallery: React.FC = () => {
     }),
   };
 
-  const swipeConfidenceThreshold = 10000;
+  const swipeConfidenceThreshold = 5000;
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
   };
 
   const paginate = (newDirection: number) => {
+    setIsPaused(true);
     if (newDirection > 0) {
       nextSlide();
     } else {
@@ -82,6 +83,7 @@ const Gallery: React.FC = () => {
 
   // Mobile touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
+    setIsPaused(true);
     const touch = e.touches[0];
     const startX = touch.clientX;
 
@@ -99,7 +101,7 @@ const Gallery: React.FC = () => {
       }
     };
 
-    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchmove", handleTouchMove, { passive: true });
     document.addEventListener(
       "touchend",
       () => {
@@ -177,12 +179,13 @@ const Gallery: React.FC = () => {
                 animate="center"
                 exit="exit"
                 transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 },
+                  x: { type: "spring", stiffness: 200, damping: 25 },
+                  opacity: { duration: 0.5 },
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={1}
+                dragElastic={0.5}
+                onDragStart={() => setIsPaused(true)}
                 onDragEnd={(e, { offset, velocity }) => {
                   const swipe = swipePower(offset.x, velocity.x);
                   if (swipe < -swipeConfidenceThreshold) {

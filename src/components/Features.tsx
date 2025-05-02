@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import {
   Wifi,
   Tv,
@@ -17,6 +18,11 @@ import {
 } from "lucide-react";
 
 const Features: React.FC = () => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   const features = [
     {
       icon: Waves,
@@ -143,9 +149,9 @@ const Features: React.FC = () => {
 
       <div className="container mx-auto px-4 sm:px-6 relative">
         <motion.div
+          ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
@@ -162,8 +168,8 @@ const Features: React.FC = () => {
           <div key={category.id} className="mb-12 last:mb-0">
             <motion.h3
               initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.5 }}
               className="text-xl sm:text-2xl font-light text-gray-800 mb-6"
             >
               {category.label}
@@ -176,9 +182,12 @@ const Features: React.FC = () => {
                   <motion.div
                     key={feature.title}
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{
+                      duration: 0.5,
+                      delay: index * 0.05,
+                      ease: "easeOut",
+                    }}
                     whileHover={{
                       scale: 1.02,
                       boxShadow: "0 10px 30px -10px rgba(0,0,0,0.1)",

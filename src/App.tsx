@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import Header from "./components/Header";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Gallery from "./components/Gallery";
@@ -51,6 +52,7 @@ function App() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
+      <Header />
       <main className="scroll-smooth">
         <Hero />
         <About />
