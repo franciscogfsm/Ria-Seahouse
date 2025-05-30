@@ -26,7 +26,7 @@ const Gallery: React.FC = () => {
     "/images/14.jpeg",
     "/images/15.jpeg",
   ];
-  //why is this not working?
+  //Removed sala
 
   const nextSlide = useCallback(() => {
     setDirection(1);
