@@ -14,7 +14,7 @@ const Hero: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const images = ["/images/15.jpeg", "/images/1.jpeg", "/images/2.jpeg"];
+  const images = ["/images/32.avif", "/images/22.avif", "/images/24.avif"];
 
   const handleTouchStart = useCallback((e: Event) => {
     const touch = (e as TouchEvent).touches[0];

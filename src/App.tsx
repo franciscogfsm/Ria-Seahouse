@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -51,9 +51,10 @@ function App() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      className="min-h-screen w-full overflow-x-hidden"
     >
       <Header />
-      <main className="scroll-smooth">
+      <main className="scroll-smooth w-full">
         <Hero />
         <About />
         <Gallery />

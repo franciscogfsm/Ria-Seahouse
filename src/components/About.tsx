@@ -216,7 +216,7 @@ const About: React.FC = () => {
               className="relative h-[400px] sm:h-[500px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl group"
             >
               <img
-                src="/images/WhatsApp Image 2025-01-09 at 21.39.14.jpeg"
+                src="/images/5.avif"
                 alt="Ria Sea House Exterior"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />

@@ -8,8 +8,18 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply overflow-x-hidden;
+  }
+
   body {
-    @apply font-sans text-gray-800 bg-cream;
+    @apply font-sans text-gray-800 bg-cream overflow-x-hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  * {
+    @apply box-border;
   }
 
   h1,

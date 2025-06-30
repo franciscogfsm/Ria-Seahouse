@@ -7,24 +7,35 @@ const Gallery: React.FC = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
   const autoplayRef = useRef<number>();
 
   const images = [
-    "/images/1.jpeg",
-    "/images/2.jpeg",
-    "/images/3.jpeg",
-    "/images/4.jpeg",
-    "/images/5.jpeg",
-    "/images/6.jpeg",
-    //"/images/7.jpeg",
-    "/images/8.jpeg",
-    //"/images/9.jpeg",
-    //"/images/10.jpeg",
-    //"/images/11.jpeg",
-    "/images/12.jpeg",
-    "/images/16.jpeg",
-    "/images/14.jpeg",
-    "/images/15.jpeg",
+    "/images/2.avif",
+    "/images/5.avif",
+    "/images/6.avif",
+    "/images/10.avif",
+    "/images/11.avif",
+    "/images/12.avif",
+    "/images/16.avif",
+    "/images/18.avif",
+    "/images/19.avif",
+    "/images/20.avif",
+    "/images/21.avif",
+    "/images/22.avif",
+    "/images/23.avif",
+    "/images/24.avif",
+    "/images/30.avif",
+    "/images/31.avif",
+    "/images/32.avif",
+    "/images/33.avif",
+    "/images/34.avif",
+    "/images/35.avif",
+    "/images/36.avif",
+    "/images/37.avif",
+    "/images/38.avif",
+    "/images/39.avif",
+    "/images/40.avif",
   ];
   //Removed sala
 
@@ -49,6 +60,14 @@ const Gallery: React.FC = () => {
       }
     };
   }, [isPaused, nextSlide]);
+
+  // Hide swipe hint after 3 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSwipeHint(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Animation variants
   const slideVariants = {
@@ -82,39 +101,39 @@ const Gallery: React.FC = () => {
     }
   };
 
-  // Mobile touch handlers
+  // Mobile touch handlers - Simplified and more responsive
   const handleTouchStart = (e: React.TouchEvent) => {
-    setIsPaused(true);
+    setShowSwipeHint(false); // Hide hint on first touch
     const touch = e.touches[0];
     const startX = touch.clientX;
+    const startTime = Date.now();
 
-    const handleTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      const diff = startX - touch.clientX;
+    const handleTouchEnd = (e: TouchEvent) => {
+      const touch = e.changedTouches[0];
+      const endX = touch.clientX;
+      const endTime = Date.now();
+      const diff = startX - endX;
+      const timeDiff = endTime - startTime;
 
-      if (Math.abs(diff) > 50) {
+      // Only trigger if swipe is fast enough and far enough
+      if (timeDiff < 300 && Math.abs(diff) > 60) {
         if (diff > 0) {
           nextSlide();
         } else {
           prevSlide();
         }
-        document.removeEventListener("touchmove", handleTouchMove);
+        setIsPaused(true);
       }
+
+      document.removeEventListener("touchend", handleTouchEnd);
     };
 
-    document.addEventListener("touchmove", handleTouchMove, { passive: true });
-    document.addEventListener(
-      "touchend",
-      () => {
-        document.removeEventListener("touchmove", handleTouchMove);
-      },
-      { once: true }
-    );
+    document.addEventListener("touchend", handleTouchEnd, { passive: true });
   };
 
   return (
-    <section id="gallery" className="py-16 sm:py-24 bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6">
+    <section id="gallery" className="py-16 sm:py-24 bg-gray-50 overflow-hidden">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -130,14 +149,14 @@ const Gallery: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="relative group">
-          {/* Navigation Buttons */}
+        <div className="relative group w-full max-w-4xl mx-auto">
+          {/* Navigation Buttons - Hidden on mobile */}
           <button
             onClick={() => {
               prevSlide();
               setIsPaused(true);
             }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:block"
             aria-label="Previous slide"
           >
             <ChevronLeft className="w-6 h-6" />
@@ -147,16 +166,16 @@ const Gallery: React.FC = () => {
               nextSlide();
               setIsPaused(true);
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:block"
             aria-label="Next slide"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Autoplay Control */}
+          {/* Autoplay Control - Hidden on mobile */}
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className="absolute bottom-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200"
+            className="absolute bottom-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 hidden sm:block"
             aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
           >
             {isPaused ? (
@@ -168,7 +187,7 @@ const Gallery: React.FC = () => {
 
           {/* Gallery Container */}
           <div
-            className="relative overflow-hidden aspect-[4/3] rounded-lg"
+            className="relative overflow-hidden aspect-square sm:aspect-[5/4] rounded-lg w-full"
             onTouchStart={handleTouchStart}
           >
             <AnimatePresence initial={false} custom={direction}>
@@ -185,9 +204,9 @@ const Gallery: React.FC = () => {
                 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.5}
+                dragElastic={0.2}
                 onDragStart={() => setIsPaused(true)}
-                onDragEnd={(e, { offset, velocity }) => {
+                onDragEnd={(_, { offset, velocity }) => {
                   const swipe = swipePower(offset.x, velocity.x);
                   if (swipe < -swipeConfidenceThreshold) {
                     paginate(1);
@@ -203,28 +222,50 @@ const Gallery: React.FC = () => {
                   className="w-full h-full object-cover cursor-pointer"
                   onClick={() => setSelectedImage(images[currentIndex])}
                 />
+
+                {/* Mobile swipe indicator - only visible on mobile and only for first few seconds */}
+                {showSwipeHint && (
+                  <div className="absolute inset-x-0 top-4 h-12 pointer-events-none sm:hidden">
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/90 text-sm bg-black/30 px-3 py-1 rounded-full animate-pulse">
+                      <span>Swipe</span>
+                      <div className="flex gap-1">
+                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
+                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
+                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Slide Indicators */}
+          {/* Slide Indicators - Only show a few representative dots */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setDirection(index > currentIndex ? 1 : -1);
-                  setCurrentIndex(index);
-                  setIsPaused(true);
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  currentIndex === index
-                    ? "bg-white w-4"
-                    : "bg-white/50 hover:bg-white/80"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+            {/* Show only 5 dots max, representing position in the gallery */}
+            {Array.from({ length: Math.min(images.length, 5) }, (_, index) => {
+              const totalImages = images.length;
+              const dotsToShow = Math.min(totalImages, 5);
+              const segmentSize = Math.ceil(totalImages / dotsToShow);
+              const currentSegment = Math.floor(currentIndex / segmentSize);
+              const isActive = index === currentSegment;
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => {
+                    const targetIndex = index * segmentSize;
+                    setDirection(targetIndex > currentIndex ? 1 : -1);
+                    setCurrentIndex(Math.min(targetIndex, totalImages - 1));
+                    setIsPaused(true);
+                  }}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 touch-none ${
+                    isActive ? "bg-white w-4" : "bg-white/50 hover:bg-white/80"
+                  }`}
+                  aria-label={`Go to image group ${index + 1}`}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
