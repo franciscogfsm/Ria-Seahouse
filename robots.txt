@@ -1,6 +1,11 @@
-# Allow all crawlers
+# Allow all crawlers - Optimized for SEO
 User-agent: *
 Allow: /
+Allow: /images/
+Allow: /*.avif
+Allow: /*.jpeg
+Allow: /*.jpg
+Allow: /*.png
 
 # Sitemap location
 Sitemap: https://riaseahouse.com/sitemap.xml
@@ -10,5 +15,31 @@ Disallow: /admin/
 Disallow: /private/
 Disallow: /api/
 
-# Crawl-delay for all bots
-Crawl-delay: 10 
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Googlebot-Image
+Allow: /images/
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Social Media Crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Bad bots
+User-agent: AhrefsBot
+Crawl-delay: 30
+
+User-agent: SemrushBot
+Crawl-delay: 30 
