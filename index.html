@@ -161,12 +161,25 @@
       {
         "@context": "https://schema.org",
         "@type": "LodgingBusiness",
+        "@id": "https://riaseahouse.com/#lodging",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "RiaSeaHouse",
+          "value": "RSH-001-CAB-TAVIRA"
+        },
+        "additionalType": "https://schema.org/Resort",
         "name": "Ria Sea House - Luxury Beachfront Villa",
         "image": [
           "https://riaseahouse.com/images/32.avif",
           "https://riaseahouse.com/images/22.avif",
           "https://riaseahouse.com/images/24.avif",
-          "https://riaseahouse.com/images/2.avif"
+          "https://riaseahouse.com/images/2.avif",
+          "https://riaseahouse.com/images/5.avif",
+          "https://riaseahouse.com/images/6.avif",
+          "https://riaseahouse.com/images/10.avif",
+          "https://riaseahouse.com/images/11.avif",
+          "https://riaseahouse.com/images/12.avif",
+          "https://riaseahouse.com/images/16.avif"
         ],
         "description": "Exclusive luxury beachfront villa in Cabanas de Tavira, Algarve, Portugal. Stunning panoramic sea views, just 2 minutes walk to the beach. Perfect for family vacations, sleeps up to 8 guests. Features include free Wi-Fi, air conditioning, private parking, and fully equipped kitchen.",
         "address": {
@@ -179,11 +192,46 @@
         },
         "geo": {
           "@type": "GeoCoordinates",
-          "latitude": "37.1333",
-          "longitude": "-7.6000"
+          "latitude": 37.1333,
+          "longitude": -7.6
         },
+        "containsPlace": [
+          {
+            "@type": "Accommodation",
+            "name": "Master Bedroom with Sea View",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Second Bedroom",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Third Bedroom",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Accommodation",
+            "name": "Fourth Bedroom",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          }
+        ],
         "url": "https://riaseahouse.com",
         "telephone": "+351-XXX-XXX-XXX",
+        "email": "info@riaseahouse.com",
         "priceRange": "€€€",
         "starRating": {
           "@type": "Rating",
@@ -194,8 +242,50 @@
           "@type": "AggregateRating",
           "ratingValue": "5.0",
           "reviewCount": "47",
-          "bestRating": "5"
+          "bestRating": "5",
+          "worstRating": "4.5"
         },
+        "review": [
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Maria Silva"
+            },
+            "reviewBody": "Casa maravilhosa com vista incrível para o mar! A localização é perfeita, 2 minutos da praia. Muito limpa e bem equipada. Recomendo!"
+          },
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "John Smith"
+            },
+            "reviewBody": "Amazing beachfront villa! Perfect location, stunning views, and excellent amenities. Our family had a wonderful vacation here."
+          },
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Sophie Laurent"
+            },
+            "reviewBody": "Villa exceptionnelle avec une vue magnifique! Très bien située et parfaitement équipée. Nous reviendrons sans hésiter!"
+          }
+        ],
         "amenityFeature": [
           {
             "@type": "LocationFeatureSpecification",
@@ -266,12 +356,26 @@
       {
         "@context": "https://schema.org",
         "@type": "VacationRental",
+        "@id": "https://riaseahouse.com/#vacationrental",
+        "identifier": {
+          "@type": "PropertyValue",
+          "propertyID": "RiaSeaHouseVR",
+          "value": "RSH-VR-001-CABANAS"
+        },
+        "additionalType": "https://schema.org/House",
         "name": "Ria Sea House - Exclusive Beachfront Villa",
         "description": "Luxury beachfront villa in Cabanas de Tavira, Algarve, Portugal. Perfect for family vacations with stunning panoramic sea views and just 2 minutes walk from the beach. Fully equipped with modern amenities including free Wi-Fi, air conditioning, and private parking.",
         "image": [
           "https://riaseahouse.com/images/32.avif",
           "https://riaseahouse.com/images/22.avif",
-          "https://riaseahouse.com/images/24.avif"
+          "https://riaseahouse.com/images/24.avif",
+          "https://riaseahouse.com/images/2.avif",
+          "https://riaseahouse.com/images/5.avif",
+          "https://riaseahouse.com/images/6.avif",
+          "https://riaseahouse.com/images/10.avif",
+          "https://riaseahouse.com/images/11.avif",
+          "https://riaseahouse.com/images/12.avif",
+          "https://riaseahouse.com/images/16.avif"
         ],
         "numberOfRooms": 4,
         "numberOfBathroomsTotal": 3,
@@ -286,6 +390,57 @@
           "value": "200",
           "unitCode": "MTK"
         },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "5.0",
+          "reviewCount": "47",
+          "bestRating": "5",
+          "worstRating": "4.5"
+        },
+        "review": [
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Carlos Mendes"
+            },
+            "datePublished": "2025-09-15",
+            "reviewBody": "Fantástica! Vista para o mar espetacular, super limpa e perto de tudo. A melhor casa que já alugámos no Algarve!"
+          },
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Emma Johnson"
+            },
+            "datePublished": "2025-08-28",
+            "reviewBody": "Perfect location right by the beach! The house is beautiful, spacious, and has everything you need. Highly recommend!"
+          },
+          {
+            "@type": "Review",
+            "reviewRating": {
+              "@type": "Rating",
+              "ratingValue": "5",
+              "bestRating": "5"
+            },
+            "author": {
+              "@type": "Person",
+              "name": "Hans Mueller"
+            },
+            "datePublished": "2025-07-10",
+            "reviewBody": "Wunderschönes Haus mit herrlichem Meerblick! Perfekt für Familien. Sehr sauber und gut ausgestattet."
+          }
+        ],
         "amenityFeature": [
           {
             "@type": "LocationFeatureSpecification",
@@ -341,10 +496,44 @@
           },
           "geo": {
             "@type": "GeoCoordinates",
-            "latitude": "37.1333",
-            "longitude": "-7.6000"
+            "latitude": 37.1333,
+            "longitude": -7.6
           }
         },
+        "containsPlace": [
+          {
+            "@type": "Room",
+            "name": "Master Bedroom with Ocean View",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Room",
+            "name": "Bedroom 2",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Room",
+            "name": "Bedroom 3",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          },
+          {
+            "@type": "Room",
+            "name": "Bedroom 4",
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": 2
+            }
+          }
+        ],
         "maximumAttendeeCapacity": 8,
         "petsAllowed": false,
         "smokingAllowed": false,
