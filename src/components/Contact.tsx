@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Instagram, Mail, Phone, Calendar, Users, MessageSquare, ArrowRight } from "lucide-react";
+import {
+  Instagram,
+  Mail,
+  Phone,
+  Users,
+  MessageSquare,
+  ArrowRight,
+} from "lucide-react";
 
 const Contact: React.FC = () => {
   const [ref, inView] = useInView({
@@ -13,7 +20,8 @@ const Contact: React.FC = () => {
     name: "",
     email: "",
     phone: "",
-    dates: "",
+    checkIn: "",
+    checkOut: "",
     guests: "",
     message: "",
   });
@@ -43,29 +51,33 @@ const Contact: React.FC = () => {
     setStatus({ type: null, message: "" });
 
     try {
-      const response = await fetch('https://qaucsydrplnclnsauwwn.supabase.co/functions/v1/send-email2', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-        },
-        body: JSON.stringify({
-          to: ["riaseahouse@gmail.com"],
-          subject: `New Booking Inquiry from ${formData.name}`,
-          html: `
+      const response = await fetch(
+        "https://qaucsydrplnclnsauwwn.supabase.co/functions/v1/send-email2",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify({
+            to: ["riaseahouse@gmail.com"],
+            subject: `New Booking Inquiry from ${formData.name}`,
+            html: `
             <h2>New Booking Inquiry</h2>
             <p><strong>Name:</strong> ${formData.name}</p>
             <p><strong>Email:</strong> ${formData.email}</p>
             <p><strong>Phone:</strong> ${formData.phone}</p>
-            <p><strong>Dates:</strong> ${formData.dates}</p>
+            <p><strong>Check-in:</strong> ${formData.checkIn}</p>
+            <p><strong>Check-out:</strong> ${formData.checkOut}</p>
             <p><strong>Number of Guests:</strong> ${formData.guests}</p>
             <p><strong>Message:</strong> ${formData.message}</p>
           `,
-        }),
-      });
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to send email');
+        throw new Error("Failed to send email");
       }
 
       setStatus({
@@ -77,14 +89,16 @@ const Contact: React.FC = () => {
         name: "",
         email: "",
         phone: "",
-        dates: "",
+        checkIn: "",
+        checkOut: "",
         guests: "",
         message: "",
       });
     } catch (error) {
       setStatus({
         type: "error",
-        message: "Failed to send message. Please try again or contact us directly.",
+        message:
+          "Failed to send message. Please try again or contact us directly.",
       });
     } finally {
       setIsSubmitting(false);
@@ -112,7 +126,10 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="section bg-gradient-to-b from-white to-gray-50 px-4 sm:px-6 py-16 md:py-24">
+    <section
+      id="contact"
+      className="section bg-gradient-to-b from-white to-gray-50 px-4 sm:px-6 py-16 md:py-24"
+    >
       <div className="container-custom max-w-6xl mx-auto">
         <motion.div
           ref={ref}
@@ -127,7 +144,10 @@ const Contact: React.FC = () => {
           >
             Contact Us
           </motion.div>
-          <motion.h2 variants={itemVariants} className="section-title mb-4 text-2xl md:text-4xl">
+          <motion.h2
+            variants={itemVariants}
+            className="section-title mb-4 text-2xl md:text-4xl"
+          >
             Book Your Perfect Stay
           </motion.h2>
           <motion.p
@@ -164,7 +184,9 @@ const Contact: React.FC = () => {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div className="ml-4 flex-1 min-w-0">
-                  <h4 className="font-medium text-gray-900 mb-0.5">Call Us Now</h4>
+                  <h4 className="font-medium text-gray-900 mb-0.5">
+                    Call Us Now
+                  </h4>
                   <p className="text-primary-600 flex items-center justify-between text-sm whitespace-nowrap">
                     <span className="font-medium">+351 962 773 707</span>
                     <ArrowRight className="w-4 h-4 opacity-70 flex-shrink-0 ml-2" />
@@ -183,7 +205,9 @@ const Contact: React.FC = () => {
                 <div className="ml-4 flex-1 min-w-0">
                   <h4 className="font-medium text-gray-900 mb-0.5">Email Us</h4>
                   <p className="text-primary-600 flex items-center justify-between text-sm">
-                    <span className="font-medium truncate">riaseahouse@gmail.com</span>
+                    <span className="font-medium truncate">
+                      riaseahouse@gmail.com
+                    </span>
                     <ArrowRight className="w-4 h-4 opacity-70 flex-shrink-0 ml-2" />
                   </p>
                 </div>
@@ -200,7 +224,9 @@ const Contact: React.FC = () => {
                   <Instagram className="w-5 h-5" />
                 </div>
                 <div className="ml-4 flex-1">
-                  <h4 className="font-medium text-gray-900 mb-0.5">Follow Us</h4>
+                  <h4 className="font-medium text-gray-900 mb-0.5">
+                    Follow Us
+                  </h4>
                   <p className="text-primary-600 flex items-center justify-between text-sm">
                     <span className="font-medium">@riaseahouse</span>
                     <ArrowRight className="w-4 h-4 opacity-70 flex-shrink-0 ml-2" />
@@ -217,7 +243,9 @@ const Contact: React.FC = () => {
 
               <div className="space-y-12">
                 <div>
-                  <h4 className="text-base text-gray-600 font-medium mb-4">Phone</h4>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">
+                    Phone
+                  </h4>
                   <motion.a
                     href="tel:+351962773707"
                     className="group block"
@@ -231,7 +259,9 @@ const Contact: React.FC = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-base text-gray-600 font-medium mb-4">Email</h4>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">
+                    Email
+                  </h4>
                   <motion.a
                     href="mailto:riaseahouse@gmail.com"
                     className="group block"
@@ -245,7 +275,9 @@ const Contact: React.FC = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-base text-gray-600 font-medium mb-4">Social</h4>
+                  <h4 className="text-base text-gray-600 font-medium mb-4">
+                    Social
+                  </h4>
                   <motion.a
                     href="https://www.instagram.com/riaseahouse"
                     target="_blank"
@@ -261,8 +293,12 @@ const Contact: React.FC = () => {
                 </div>
 
                 <div className="bg-blue-50/80 rounded-xl p-6">
-                  <p className="text-blue-600 text-lg font-medium mb-2">Available 24/7</p>
-                  <p className="text-blue-500/90 text-base">We'll get back to you within 24 hours</p>
+                  <p className="text-blue-600 text-lg font-medium mb-2">
+                    Available 24/7
+                  </p>
+                  <p className="text-blue-500/90 text-base">
+                    We'll get back to you within 24 hours
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -318,79 +354,149 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Your Email
-                </label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
-                    required
-                    disabled={isSubmitting}
-                  />
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                    <Mail className="w-4 h-4" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
+                      required
+                      disabled={isSubmitting}
+                    />
+                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+                      <Mail className="w-4 h-4" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Phone
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="+351 123 456 789"
+                      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
+                      disabled={isSubmitting}
+                    />
+                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+                      <Phone className="w-4 h-4" />
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label
-                    htmlFor="dates"
+                    htmlFor="checkIn"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Dates
+                    Check-in
                   </label>
                   <div className="relative">
                     <input
-                      type="text"
-                      id="dates"
-                      name="dates"
-                      value={formData.dates}
+                      type="date"
+                      id="checkIn"
+                      name="checkIn"
+                      value={formData.checkIn}
                       onChange={handleChange}
-                      placeholder="Jul 15-20"
-                      className="w-full pl-11 pr-2 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
+                      min={new Date().toISOString().split("T")[0]}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
                       required
                       disabled={isSubmitting}
                     />
-                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                      <Calendar className="w-4 h-4" />
-                    </div>
                   </div>
                 </div>
 
                 <div>
                   <label
-                    htmlFor="guests"
+                    htmlFor="checkOut"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Guests
+                    Check-out
                   </label>
                   <div className="relative">
                     <input
-                      type="number"
-                      id="guests"
-                      name="guests"
-                      value={formData.guests}
+                      type="date"
+                      id="checkOut"
+                      name="checkOut"
+                      value={formData.checkOut}
                       onChange={handleChange}
-                      min="1"
-                      max="8"
-                      className="w-full pl-11 pr-2 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
+                      min={
+                        formData.checkIn ||
+                        new Date().toISOString().split("T")[0]
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base"
                       required
                       disabled={isSubmitting}
                     />
-                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
-                      <Users className="w-4 h-4" />
-                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="guests"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Number of Guests
+                </label>
+                <div className="relative">
+                  <select
+                    id="guests"
+                    name="guests"
+                    value={formData.guests}
+                    onChange={handleChange}
+                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow duration-200 text-base appearance-none bg-white cursor-pointer"
+                    required
+                    disabled={isSubmitting}
+                  >
+                    <option value="">Select guests</option>
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5 Guests</option>
+                    <option value="6">6 Guests</option>
+                    <option value="7">7 Guests</option>
+                    <option value="8">8 Guests</option>
+                  </select>
+                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>

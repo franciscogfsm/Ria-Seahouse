@@ -1,251 +1,193 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Pause, Play, X } from "lucide-react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const Gallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [showSwipeHint, setShowSwipeHint] = useState(true);
-  const autoplayRef = useRef<number>();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const images = [
-    "/images/2.avif",
-    "/images/5.avif",
-    "/images/6.avif",
-    "/images/10.avif",
-    "/images/11.avif",
-    "/images/12.avif",
-    "/images/16.avif",
-    "/images/18.avif",
-    "/images/19.avif",
-    "/images/20.avif",
-    "/images/21.avif",
-    "/images/22.avif",
-    "/images/23.avif",
-    "/images/24.avif",
-    "/images/30.avif",
-    "/images/31.avif",
-    "/images/32.avif",
-    "/images/33.avif",
-    "/images/34.avif",
-    "/images/35.avif",
-    "/images/36.avif",
-    "/images/37.avif",
-    "/images/38.avif",
-    "/images/39.avif",
-    "/images/40.avif",
+    "/images/entrada1.avif",
+    "/images/entrada2.avif",
+    "/images/sala1.avif",
+    "/images/sala2.avif",
+    "/images/sala4.avif",
+    "/images/sala5.avif",
+    "/images/sala6.avif",
+    "/images/sala7.avif",
+    "/images/sala8.avif",
+    "/images/sala9.avif",
+    "/images/cozinha1.avif",
+    "/images/cozinha2.avif",
+    "/images/quartobaixo1.avif",
+    "/images/quartobaixo2.avif",
+    "/images/quartobaixo3.avif",
+    "/images/quartocima2.avif",
+    "/images/casadebanho1.avif",
+    "/images/casadebanho2.avif",
+    "/images/casadebanho3.avif",
+    "/images/casadebanho4.avif",
+    "/images/casadebanho5.avif",
+    "/images/casadebanho6.avif",
+    "/images/varanda1.avif",
+    "/images/vista1.avif",
+    "/images/vista2.avif",
+    "/images/vista3.avif",
+    "/images/vista4.avif",
+    "/images/vista5.avif",
+    "/images/vista6.avif",
+    "/images/vista7.avif",
+    "/images/vista8.avif",
+    "/images/vista9.avif",
+    "/images/vista10.avif",
+    "/images/vista11.avif",
+    "/images/escadas1.avif",
+    "/images/saida1.avif",
+    "/images/condominio1.avif",
   ];
-  //Removed sala
 
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  }, [images.length]);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
-
-  // Handle autoplay
+  // Preload ALL images immediately on mount for instant gallery experience
   useEffect(() => {
-    if (!isPaused) {
-      autoplayRef.current = window.setInterval(nextSlide, 12000);
-    }
-    return () => {
-      if (autoplayRef.current) {
-        clearInterval(autoplayRef.current);
-      }
-    };
-  }, [isPaused, nextSlide]);
-
-  // Hide swipe hint after 3 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSwipeHint(false);
-    }, 3000);
-    return () => clearTimeout(timer);
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
   }, []);
 
-  // Animation variants
-  const slideVariants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    }),
-  };
+  // Update current index based on scroll position
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
-  const swipeConfidenceThreshold = 5000;
-  const swipePower = (offset: number, velocity: number) => {
-    return Math.abs(offset) * velocity;
-  };
-
-  const paginate = (newDirection: number) => {
-    setIsPaused(true);
-    if (newDirection > 0) {
-      nextSlide();
-    } else {
-      prevSlide();
-    }
-  };
-
-  // Mobile touch handlers - Simplified and more responsive
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setShowSwipeHint(false); // Hide hint on first touch
-    const touch = e.touches[0];
-    const startX = touch.clientX;
-    const startTime = Date.now();
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      const touch = e.changedTouches[0];
-      const endX = touch.clientX;
-      const endTime = Date.now();
-      const diff = startX - endX;
-      const timeDiff = endTime - startTime;
-
-      // Only trigger if swipe is fast enough and far enough
-      if (timeDiff < 300 && Math.abs(diff) > 60) {
-        if (diff > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
-        setIsPaused(true);
-      }
-
-      document.removeEventListener("touchend", handleTouchEnd);
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      const itemWidth = container.offsetWidth;
+      const newIndex = Math.round(scrollLeft / itemWidth);
+      setCurrentIndex(newIndex);
     };
 
-    document.addEventListener("touchend", handleTouchEnd, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Scroll to specific image
+  const scrollToImage = (index: number) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const itemWidth = container.offsetWidth;
+    container.scrollTo({
+      left: index * itemWidth,
+      behavior: "smooth",
+    });
+  };
+
+  // Navigate to next/previous image in gallery - Fixed to update pagination
+  const scrollNext = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const containerWidth = container.offsetWidth;
+    const scrollAmount = containerWidth * 0.8; // Scroll 80% of container width
+
+    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  };
+
+  const scrollPrev = () => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const containerWidth = container.offsetWidth;
+    const scrollAmount = containerWidth * 0.8; // Scroll 80% of container width
+
+    container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  };
+
+  // Navigate lightbox images
+  const nextImage = () => {
+    setSelectedIndex((prev) => (prev + 1) % images.length);
+    setSelectedImage(images[(selectedIndex + 1) % images.length]);
+  };
+
+  const prevImage = () => {
+    setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
+    setSelectedImage(
+      images[(selectedIndex - 1 + images.length) % images.length]
+    );
+  };
+
+  const openLightbox = (image: string, index: number) => {
+    setSelectedImage(image);
+    setSelectedIndex(index);
   };
 
   return (
-    <section id="gallery" className="py-16 sm:py-24 bg-gray-50 overflow-hidden">
+    <section id="gallery" className="py-16 sm:py-24 bg-gray-50">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-light text-gray-900 mb-4 tracking-wide">
             Gallery
           </h2>
           <p className="text-gray-600 font-light">
             Explore our beautiful spaces and amenities
           </p>
-        </motion.div>
+        </div>
 
-        <div className="relative group w-full max-w-4xl mx-auto">
-          {/* Navigation Buttons - Hidden on mobile */}
+        <div className="relative w-full max-w-6xl mx-auto group/gallery">
+          {/* Navigation Arrows - Desktop Only */}
           <button
-            onClick={() => {
-              prevSlide();
-              setIsPaused(true);
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:block"
-            aria-label="Previous slide"
+            onClick={scrollPrev}
+            className="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 -translate-x-1/2"
+            aria-label="Previous images"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
           <button
-            onClick={() => {
-              nextSlide();
-              setIsPaused(true);
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hidden sm:block"
-            aria-label="Next slide"
+            onClick={scrollNext}
+            className="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 translate-x-1/2"
+            aria-label="Next images"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Autoplay Control - Hidden on mobile */}
-          <button
-            onClick={() => setIsPaused(!isPaused)}
-            className="absolute bottom-4 right-4 z-10 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all duration-200 hidden sm:block"
-            aria-label={isPaused ? "Play slideshow" : "Pause slideshow"}
-          >
-            {isPaused ? (
-              <Play className="w-4 h-4" />
-            ) : (
-              <Pause className="w-4 h-4" />
-            )}
-          </button>
-
-          {/* Gallery Container */}
+          {/* Horizontal scroll container */}
           <div
-            className="relative overflow-hidden aspect-square sm:aspect-[5/4] rounded-lg w-full"
-            onTouchStart={handleTouchStart}
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide pb-4"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
           >
-            <AnimatePresence initial={false} custom={direction}>
-              <motion.div
-                key={currentIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 200, damping: 25 },
-                  opacity: { duration: 0.5 },
-                }}
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
-                onDragStart={() => setIsPaused(true)}
-                onDragEnd={(_, { offset, velocity }) => {
-                  const swipe = swipePower(offset.x, velocity.x);
-                  if (swipe < -swipeConfidenceThreshold) {
-                    paginate(1);
-                  } else if (swipe > swipeConfidenceThreshold) {
-                    paginate(-1);
-                  }
-                }}
-                className="absolute inset-0 w-full h-full"
+            {images.map((image, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-full sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.667rem)] snap-center"
               >
-                <img
-                  src={images[currentIndex]}
-                  alt={`Gallery image ${currentIndex + 1}`}
-                  className="w-full h-full object-cover cursor-pointer"
-                  onClick={() => setSelectedImage(images[currentIndex])}
-                />
-
-                {/* Mobile swipe indicator - only visible on mobile and only for first few seconds */}
-                {showSwipeHint && (
-                  <div className="absolute inset-x-0 top-4 h-12 pointer-events-none sm:hidden">
-                    <div className="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-white/90 text-sm bg-black/30 px-3 py-1 rounded-full animate-pulse">
-                      <span>Swipe</span>
-                      <div className="flex gap-1">
-                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
-                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
-                        <div className="w-1 h-1 bg-white/80 rounded-full"></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-            </AnimatePresence>
+                <div
+                  className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group"
+                  onClick={() => openLightbox(image, index)}
+                >
+                  <img
+                    src={image}
+                    alt={`Gallery image ${index + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+                    loading="eager"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Slide Indicators - Only show a few representative dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-            {/* Show only 5 dots max, representing position in the gallery */}
-            {Array.from({ length: Math.min(images.length, 5) }, (_, index) => {
+          {/* Pagination Dots */}
+          <div className="flex justify-center gap-2 mt-8">
+            {Array.from({ length: Math.min(images.length, 8) }, (_, index) => {
               const totalImages = images.length;
-              const dotsToShow = Math.min(totalImages, 5);
+              const dotsToShow = Math.min(totalImages, 8);
               const segmentSize = Math.ceil(totalImages / dotsToShow);
               const currentSegment = Math.floor(currentIndex / segmentSize);
               const isActive = index === currentSegment;
@@ -253,14 +195,11 @@ const Gallery: React.FC = () => {
               return (
                 <button
                   key={index}
-                  onClick={() => {
-                    const targetIndex = index * segmentSize;
-                    setDirection(targetIndex > currentIndex ? 1 : -1);
-                    setCurrentIndex(Math.min(targetIndex, totalImages - 1));
-                    setIsPaused(true);
-                  }}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 touch-none ${
-                    isActive ? "bg-white w-4" : "bg-white/50 hover:bg-white/80"
+                  onClick={() => scrollToImage(index * segmentSize)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    isActive
+                      ? "bg-primary-600 w-8"
+                      : "bg-gray-300 w-2 hover:bg-gray-400"
                   }`}
                   aria-label={`Go to image group ${index + 1}`}
                 />
@@ -277,32 +216,60 @@ const Gallery: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
             onClick={() => setSelectedImage(null)}
           >
-            <motion.div
-              className="relative max-w-4xl max-h-[90vh]"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", duration: 0.3 }}
+            {/* Navigation Arrows */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImage();
+              }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all duration-200"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImage();
+              }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/10 hover:bg-white/20 text-white p-3 rounded-full transition-all duration-200"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Close button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage(null);
+              }}
+              className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors bg-black/30 hover:bg-black/50 p-2 rounded-full"
+              aria-label="Close lightbox"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            {/* Image counter */}
+            <div className="absolute top-4 left-4 z-10 text-white text-sm bg-black/30 px-3 py-1 rounded-full">
+              {selectedIndex + 1} / {images.length}
+            </div>
+
+            {/* Image container - No scroll needed */}
+            <div
+              className="relative w-full h-full flex items-center justify-center p-16 sm:p-20"
+              onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={selectedImage}
-                alt="Selected gallery image"
-                className="w-full h-full object-contain"
+                alt={`Gallery image ${selectedIndex + 1}`}
+                className="max-w-full max-h-full w-auto h-auto object-contain"
+                loading="eager"
               />
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedImage(null);
-                }}
-                className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
-                aria-label="Close lightbox"
-              >
-                <X className="h-8 w-8" />
-              </button>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

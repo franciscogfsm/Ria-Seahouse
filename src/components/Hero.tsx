@@ -14,7 +14,11 @@ const Hero: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const images = ["/images/32.avif", "/images/22.avif", "/images/24.avif"];
+  const images = [
+    "/images/capa1.avif",
+    "/images/capa2.avif",
+    "/images/capa3.avif",
+  ];
 
   const handleTouchStart = useCallback((e: Event) => {
     const touch = (e as TouchEvent).touches[0];
@@ -54,7 +58,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+    }, 6000); // Slower transition for better performance
     return () => clearInterval(timer);
   }, [images.length]);
 

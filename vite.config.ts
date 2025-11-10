@@ -5,7 +5,20 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    exclude: ["lucide-react"],
+    include: ["react", "react-dom", "framer-motion"],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          animations: ["framer-motion"],
+        },
+      },
+    },
+    minify: "esbuild",
+    target: "esnext",
+    cssCodeSplit: true,
   },
   server: {
     port: 5174,
